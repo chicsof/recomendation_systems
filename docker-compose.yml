@@ -1,0 +1,10 @@
+version: '2'
+services:
+  server:
+    build: ./book_server
+    command: /app/server.R
+    volumes:
+     - ./book_server:/app
+    restart: always
+    ports:
+     - "8000:8000"
