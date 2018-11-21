@@ -139,8 +139,8 @@ null_to_na <- function(n) {
 }
 
 #* @post /rating
-butthole <- function(book1,book2,book3,book4,book5,book6,book7,book8,book9,book10,book11,book12,book13,book14,
-                              book15,book16,book17,book18,book19,book20) {
+butthole <- function(book1, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11, book12, book13,
+                     book14, book15, book16, book17, book18, book19, book20) {
   null_to_na(book1)
   null_to_na(book2)
   null_to_na(book3)
@@ -161,8 +161,9 @@ butthole <- function(book1,book2,book3,book4,book5,book6,book7,book8,book9,book1
   null_to_na(book18)
   null_to_na(book19)
   null_to_na(book20)
-  getRecomendations(book1,book2,book3,book4,book5,book6,book7,book8,book9,book10,book11,book12,book13,book14,
-                              book15,book16,book17,book18,book19,book20)
+
+  getRecomendations(book1, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11, book12, book13,
+                    book14, book15, book16, book17, book18, book19, book20)
 }
 
 getRecomendations <- function(book1,book2,book3,book4,book5,book6,book7,book8,book9,book10,book11,book12,book13,book14,
@@ -189,14 +190,7 @@ getRecomendations <- function(book1,book2,book3,book4,book5,book6,book7,book8,bo
 
 
 
-
-
-
-
-
-
-
-# something
+# Rules
 #* @post /rules
 useRules <- function(bookNumber){
   switch(
@@ -212,8 +206,3 @@ useRules <- function(bookNumber){
     {0}
   )
 }
-
-
-
-
-
