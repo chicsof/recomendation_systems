@@ -19,6 +19,15 @@ injectGlobal`
     line-height: ${dimensions.lineHeight.regular} !important;
   }
 
+  .minedAssociationsModal {
+    padding: 3rem;
+  }
+
+  .ratingMatrixModal {
+    max-width: 1200px;
+    padding: 2.8rem;
+  }
+
   body {
     width: 100%;
     overflow-x: hidden;
@@ -38,6 +47,16 @@ injectGlobal`
     &:focus {
       text-decoration: underline;
     }
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  h2 {
+    font-size: 1.953rem;
+    border-top: 1px #CFCFCF solid;
+    padding-top: 10px;
   }
 
   img {

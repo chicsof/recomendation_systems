@@ -8,6 +8,7 @@ cors <- function(res) {
 
 #* @get /mean
 normalMean <- function(samples=10){
+  message("/mean")
   data <- rnorm(samples)
   mean(data)
 }
@@ -23,6 +24,7 @@ split_array_string <- function (x) strsplit(x, ",+")
 
 #* @post /test
 testing <- function(list){
+  message("/test")
   message(list)
   trimmed_array_string <- trim_array_string(list)
   message(trimmed_array_string)
@@ -51,6 +53,7 @@ get_books <- function(){
 
 #* @post /closestThree
 getClosest3 <- function(bookNumber){
+  message("/closestThree")
   distDataSet <- get.distance(bookNumber)
   distDataSet <- distDataSet[! (distDataSet$CompBook==bookNumber),]
   orderedDistances <- distDataSet[order(distDataSet$totalDist, decreasing=FALSE), ]
@@ -122,8 +125,8 @@ for (i in 1:20){
 readers <- c(1:15)
 
 #now we make the new data set
-readers.data <- data.frame(readers, book1, book2,book3,book4,book5,book6,book7,book8,book9,book10,book11,book12,book13,
-                           book14,book15,book17,book18,book19,book20)
+readers.data <- data.frame(readers, book1, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11,
+                           book12, book13, book14, book15, book17, book18, book19, book20)
 
 library(DMwR)
 completeMatrix <- knnImputation(readers.data, k = 3, scale = T, meth = "weighAvg",
@@ -139,8 +142,9 @@ null_to_na <- function(n) {
 }
 
 #* @post /rating
-butthole <- function(book1, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11, book12, book13,
-                     book14, book15, book16, book17, book18, book19, book20) {
+ratingWrapper <- function(book1, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11, book12, book13,
+                          book14, book15, book16, book17, book18, book19, book20) {
+  message("/rating")
   null_to_na(book1)
   null_to_na(book2)
   null_to_na(book3)
@@ -166,25 +170,45 @@ butthole <- function(book1, book2, book3, book4, book5, book6, book7, book8, boo
                     book14, book15, book16, book17, book18, book19, book20)
 }
 
-getRecomendations <- function(book1,book2,book3,book4,book5,book6,book7,book8,book9,book10,book11,book12,book13,book14,
-                              book15,book16,book17,book18,book19,book20){
+getRecomendations <- function(book1, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11, book12,
+                              book13, book14, book15, book16, book17, book18, book19, book20){
 
+  #since we dont have a log in page, we dont know who the user is. For now we can jsut assume this ratings are comming from a new user
+  #so we need to add this new user number to our rating matrix
   newUserId <- nrow(readers.data) + 1
-  newEntry <- c(newUserId, book1, book2,book3,book4,book5,book6,book7,book8,book9,book10,book11,book12,book13,book14,
-                book15,book16,book17,book18,book19,book20)
 
-  newMatrix <- rbind(readers.data, newEntry)
-  completeMatrix <- knnImputation(newMatrix, k = 3, scale = T, meth = "weighAvg",
+  #we capture his ratings in this vector
+  newEntry <- c(newUserId, book1, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11, book12,
+                book13, book14, book15, book16, book17, book18, book19, book20)
+
+  #then we add his ratings and umber to the existing matrix
+  newMatrix <- rbind(readers.data,newEntry)
+
+  #we fill in the gaps from missing ratings, as explained before using the function provided by the library
+  completeMatrix <- knnImputation(newMatrix,
+                                  k = 3,
+                                  scale = T,
+                                  meth = "weighAvg",
                                   distData = NULL)
 
-  readersRating <- completeMatrix[completeMatrix$readers == newUserId,]
+  #capture the users ratings after we filled in the gaps
+  readersRatingComplete <- completeMatrix[completeMatrix$readers == newUserId,]
+  #capture the books that the user has not rated
+  readersRatingsMissing <- which(is.na(newEntry))
+
+  #recomend books that the user has not rated and for which the predicted ratings are more than 3.4
   recommended <- integer()
   for (i in 2:20){
-    if(readersRating[i] > 4){
-      recommended <- c(recommended, readersRating[i])
+  if (i %in% readersRatingsMissing){
+    if(readersRatingComplete[i] > 3.4){
+      recommended <- c(recommended, readersRatingComplete[i])
     }
+   }
   }
-  return(recommended)
+
+  #return the books that sutisfy that :)
+  return( recommended)
+
 }
 
 
@@ -193,6 +217,7 @@ getRecomendations <- function(book1,book2,book3,book4,book5,book6,book7,book8,bo
 # Rules
 #* @post /rules
 useRules <- function(bookNumber){
+  message("/rules")
   switch(
     toString(bookNumber),
     "1"=2,

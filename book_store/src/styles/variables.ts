@@ -1,4 +1,5 @@
 /* tslint:disable:max-line-length */
+import "typeface-open-sans";
 
 export const colors = {
 	accent: "#ffb238",
@@ -23,7 +24,7 @@ export const colors = {
 
 export const fonts = {
 	monospace: "Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace, monospace",
-	sansSerif: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Arial, sans-serif",
+	sansSerif: "'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Arial, sans-serif",
 	serif: "Georgia, 'Times New Roman', Times, serif",
 };
 

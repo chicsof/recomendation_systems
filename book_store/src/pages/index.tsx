@@ -1,5 +1,8 @@
 import * as React from "react";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import BookBuyer from "../components/BookBuyer";
 import BookRater from "../components/BookRater";
 
@@ -14,6 +17,7 @@ if (process.env.NODE_ENV !== "production") {
 const IndexPage = () => (
 	<IndexLayout>
 		<Page>
+			<ToastContainer />
 			<Container>
 				<BookBuyer />
 				<BookRater />

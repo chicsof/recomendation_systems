@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import Modal from "react-responsive-modal";
+import Select from "react-select";
 
 import Logger from "../Logger";
 
@@ -9,89 +10,179 @@ import Logger from "../Logger";
 class BookBuyer extends React.Component<any, any> {
 	constructor(props: any) {
 		super(props);
+		const options = this.generateBookOptions();
 		this.state = {
 			bookDropdownSelection: "1",
 			formValue: "",
-			modalOpen: false,
+			modalOpen: {
+				allBooks: false,
+				rules: false,
+				transactionHistory: false,
+			},
+			options,
 			recomendedBooks: [],
 			rules: [],
-			selectedBook: null,
+			selectedBook: options[0],
 		};
 	}
 
 	public render() {
-		const { modalOpen } = this.state;
+		const { modalOpen, options, recomendedBooks, rules } = this.state;
+		const browseStyle: React.CSSProperties = {
+			backgroundColor: "#5FBC4F",
+			border: 0,
+			borderRadius: "4px",
+			color: "#FFF",
+			fontSize: "1.2em",
+			margin: "1.1em",
+			padding: "1em",
+		};
+
+		const buyStyle: React.CSSProperties = {
+			backgroundColor: "#3DA047",
+			border: 0,
+			borderRadius: "4px",
+			color: "#FFF",
+			fontSize: "1.2em",
+			margin: "0.3em",
+			padding: ".4em",
+		};
+
 		return (
 			<div>
-				<h2>Content based fitering</h2>
-				<h3>Recomending similar books based on their properties</h3>
-				<button onClick={ this.openModal }>Browse books</button>
+				<button onClick={ () => this.openModals("allBooks") } style={ browseStyle }>
+					Browse books
+				</button>
 				<Modal
-					open={ modalOpen }
-					onClose={ this.closeModal }
+					open={ modalOpen.allBooks }
+					onClose={ () => this.closeModals("allBooks") }
 				>
 					<img src={require("../../books/all_books.png")}></img>
 				</Modal>
-				<form onSubmit={ this.formSubmit }>
-					<label>
-					Buy book:
+				<div>
+					<label style={ { fontSize: "2em" } }>
+						Buy book:
 					</label>
-					{" "}
-					<select onChange={ this.selectChange }>
-						{ this.populateBookOptions() }
-					</select>
-					{" "}
-					<input type="submit" value="Submit" />
-				</form>
-				<div>Recomended books: { this.getBooks(this.state.recomendedBooks) } </div>
-				<div>Rules: { this.state.rules.toString() } </div>
+					<div style={{ maxWidth: 300, display: "inline-block", width: "100%", margin: "10px" }}>
+						<Select
+							onChange={ this.selectChange }
+							options={ options }
+							defaultValue={ options[0] }
+							theme={(theme) => ({
+								...theme,
+								borderRadius: 0,
+								colors: {
+									...theme.colors,
+									primary: "#5FBC4F",
+									primary25: "rgba(95, 188, 79, 0.4)",
+								}})
+							}
+						/>
+					</div>
+				<button style={ buyStyle } onClick={ this.sendPurchase }>Buy</button>
+				</div>
+				<h2>Content based fitering</h2>
+				<h3>Recomending similar books based on their properties</h3>
+				<p>Recomended books:</p>
+				<div style={ { display: "flex", textAlign: "center", flexWrap: "wrap", alignItems: "center" } }>
+					{ this.getBooksRecomendations(recomendedBooks) }
+				</div>
+				<h2>Mining item association rules</h2>
+				<h3>Recomending items that are often bought together</h3>
+				<button onClick={ () => this.openModals("rules") } style={ buyStyle }>
+					View the mined associations
+				</button>
+				<Modal
+					open={ modalOpen.rules }
+					onClose={ () => this.closeModals("rules") }
+					classNames={{ modal: "minedAssociationsModal" }}
+				>
+					<img src={require("../../books/rules.png")}/>
+				</Modal>
+				<button onClick={ () => this.openModals("transactionHistory") } style={ buyStyle }>
+					View transaction history
+				</button>
+				<Modal
+					open={ modalOpen.transactionHistory }
+					onClose={ () => this.closeModals("transactionHistory") }
+				>
+					<img src={require("../../books/transactions.png")}/>
+				</Modal>
+				<p>Rules based recomendations:</p>
+				<div>
+					{ this.getBooksRules(rules) }
+				</div>
+				<p/>
 			</div>
 		);
 	}
 
+	private selectChange = (selected: any) => {
+		this.setState({ selectedBook: selected });
+	}
+
+	private getBooksRecomendations = (recomendedBooks: number[]) => {
+		const bookList = this.getBooks(recomendedBooks);
+		return (bookList.length > 0)
+			? bookList
+			: <div style={ { color: "#AEAEAE" } }>Please buy a book to recive a recomendation</div>;
+	}
+
+	private getBooksRules = (recomendedBooks: number[]) => {
+		if (recomendedBooks.length === 1 && recomendedBooks[0] === 0) {
+			return <div style={ { color: "#AEAEAE" } }>There is no rule for this book</div>;
+		} else {
+			const bookList = this.getBooks(recomendedBooks);
+			Logger.info("a", bookList);
+			return (bookList.length > 0)
+				? bookList
+				: <div style={ { color: "#AEAEAE" } }>Please buy a book to recive a recomendation</div>;
+		}
+	}
+
 	private getBooks = (recomendedBooks: number[]) => (
-		recomendedBooks.map((bookNumber) => <img src={require(`../../books/mini/minbook${bookNumber}.png`)}></img>)
+		recomendedBooks.map((bookNumber, bookIndex) =>
+			<img
+				key={bookIndex}
+				style={ { display: "inline-table", width: 170, padding: 10 } }
+				height={150}
+				src={require(`../../books/mini/minbook${bookNumber}.png`)}
+			/>,
+		)
 	)
 
-	private openModal = () => {
+	private openModals = (key: string) => {
 		Logger.info("Showing Modal");
-		this.setState({ modalOpen: true });
+		this.setState({ modalOpen: {
+			...this.state.modalOpen,
+			[key]: true,
+		}});
 	}
-	private closeModal = () => {
+	private closeModals = (key: string) => {
 		Logger.info("Hiding Modal");
-		this.setState({ modalOpen: false });
+		this.setState({ modalOpen: {
+			...this.state.modalOpen,
+			[key]: false,
+		}});
 	}
 
-	private populateBookOptions = () => {
-		const array: JSX.Element[] = [];
+	private generateBookOptions = () => {
+		const array = [];
 		for (let i = 1; i <= 20; i++) {
-			array.push(<option key={i} value={i}>Book {i}</option>);
+			array.push({ value: i, label: `Book ${i}` });
 		}
 		return array;
 	}
 
-	private selectChange = (event: React.ChangeEvent) => {
-		Logger.info("Updating change");
-		this.setState({ bookDropdownSelection: event.target.nodeValue });
-	}
+	private sendPurchase = () => {
+		const { selectedBook } = this.state;
+		this.sendBookPurchase(selectedBook.value);
+		this.sendBookApriori(selectedBook.value);
 
-	private formSubmit = (event: React.FormEvent) => {
-		event.preventDefault();
-		const selectedBook: number = Number(this.state.bookDropdownSelection);
-		Logger.info("selected book", selectedBook);
-		if (! isNaN(selectedBook)) {
-			Logger.info("Is a number");
-			this.setState({ selectedBook }, () => {
-				this.sendBookPurchase(this.state.selectedBook);
-				this.sendBookApriori(this.state.selectedBook);
-			});
-		} else {
-			Logger.error("Not a number");
-		}
 	}
 
 	private sendBookPurchase = (bookId: number) => {
-		Logger.info("book id", bookId);
+		Logger.info("sendBookPurchase bookId", bookId);
 		fetch("http://localhost:8000/closestThree", {
 			body: JSON.stringify({ bookNumber: bookId }),
 			method: "POST",
@@ -111,7 +202,7 @@ class BookBuyer extends React.Component<any, any> {
 	}
 
 	private sendBookApriori = (bookId: number) => {
-		Logger.info(bookId);
+		Logger.info("sendBookApriori bookId", bookId);
 		fetch("http://localhost:8000/rules", {
 			body: JSON.stringify({ bookNumber: bookId }),
 			method: "POST",
