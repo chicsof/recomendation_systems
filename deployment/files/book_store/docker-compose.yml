@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  frontend:
+    image: registry.gitlab.com/chicsof/recomendation_systems/frontend
+    restart: always
+    networks:
+      - web
+      - default
+    expose:
+      - "80"
+    labels:
+      - "traefik.backend=frontend"
+      - "traefik.docker.network=web"
+      - "traefik.frontend.rule=Host:datasupport.site"
+      - "traefik.enable=true"
+      - "traefik.port=80"
+    container_name: frontend
+  backend:
+    image: registry.gitlab.com/chicsof/recomendation_systems/backend
+    restart: always
+    networks:
+      - web
+      - default
+    expose:
+      - "8000"
+    labels:
+      - "traefik.backend=backend"
+      - "traefik.docker.network=web"
+      - "traefik.frontend.rule=Host:r.datasupport.site;PrefixPathStrip:/r/"
+      - "traefik.enable=true"
+      - "traefik.port=8000"
+    container_name: backend
+
+networks:
+  web:
+    external: true

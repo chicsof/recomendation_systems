@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Logger from "../Logger";
 import Rating from "./RatingWrapper";
 
+const baseUrl = (process.env.NODE_ENV === "production") ? "https://datasupport.site/r" : "http://localhost:8000";
 
 export default class BookBuyer extends React.Component<any, any> {
 	constructor(props: any) {
@@ -148,7 +149,7 @@ export default class BookBuyer extends React.Component<any, any> {
 		});
 
 		if (count !== Object.keys(ratings).length) {
-			fetch("http://localhost:8000/rating", {
+			fetch(`${baseUrl}/rating`, {
 				body: JSON.stringify(data),
 				method: "POST",
 			}).then(

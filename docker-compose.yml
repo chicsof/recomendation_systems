@@ -1,7 +1,9 @@
 version: '2'
 services:
   server:
-    build: ./book_server
+    build:
+      context: ./book_server
+      dockerfile: dev.Dockerfile
     command: /app/server.R
     volumes:
      - ./book_server:/app

@@ -5,6 +5,8 @@ import Select from "react-select";
 
 import Logger from "../Logger";
 
+const baseUrl = (process.env.NODE_ENV === "production") ? "https://datasupport.site/r" : "http://localhost:8000";
+
 // interface BookBuyerProps { className?: string }
 
 class BookBuyer extends React.Component<any, any> {
@@ -183,7 +185,7 @@ class BookBuyer extends React.Component<any, any> {
 
 	private sendBookPurchase = (bookId: number) => {
 		Logger.info("sendBookPurchase bookId", bookId);
-		fetch("http://localhost:8000/closestThree", {
+		fetch(`${baseUrl}/closestThree`, {
 			body: JSON.stringify({ bookNumber: bookId }),
 			method: "POST",
 		}).then(
@@ -203,7 +205,7 @@ class BookBuyer extends React.Component<any, any> {
 
 	private sendBookApriori = (bookId: number) => {
 		Logger.info("sendBookApriori bookId", bookId);
-		fetch("http://localhost:8000/rules", {
+		fetch(`${baseUrl}/rules`, {
 			body: JSON.stringify({ bookNumber: bookId }),
 			method: "POST",
 		}).then(
