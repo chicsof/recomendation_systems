@@ -1,0 +1,7 @@
+{
+	"private": true,
+	"devDependencies": {
+		"serverless": "^1.38.0",
+		"serverless-domain-manager": "^2.6.13"
+	}
+}
