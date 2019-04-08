@@ -8,8 +8,8 @@ addons:
 node_js:
   - "stable"
 cache:
-  npm: true
   directories:
+    - $HOME/.npm
     - book_store/.cache
 before_install:
   - cd book_store
