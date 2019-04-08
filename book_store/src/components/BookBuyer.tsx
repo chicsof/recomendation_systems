@@ -185,9 +185,8 @@ class BookBuyer extends React.Component<any, any> {
 
 	private sendBookPurchase = (bookId: number) => {
 		Logger.info("sendBookPurchase bookId", bookId);
-		fetch(`${baseUrl}/closestThree`, {
-			body: JSON.stringify({ bookNumber: bookId }),
-			method: "POST",
+		fetch(`${baseUrl}/closestThree/${bookId}`, {
+			method: "GET",
 		}).then(
 			(value) => {
 				value.json().then(
@@ -205,9 +204,8 @@ class BookBuyer extends React.Component<any, any> {
 
 	private sendBookApriori = (bookId: number) => {
 		Logger.info("sendBookApriori bookId", bookId);
-		fetch(`${baseUrl}/rules`, {
-			body: JSON.stringify({ bookNumber: bookId }),
-			method: "POST",
+		fetch(`${baseUrl}/rules/${bookId}`, {
+			method: "GET",
 		}).then(
 			(value) => {
 				value.json().then(
