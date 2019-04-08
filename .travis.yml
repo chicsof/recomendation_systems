@@ -16,4 +16,4 @@ deploy:
   github-token: $GITHUB_TOKEN
   local-dir: book_store/public
   on:
-    branch: master
+    branch: move_to_serverless
