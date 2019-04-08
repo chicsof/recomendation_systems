@@ -1,10 +1,15 @@
 language: node_js
+
+addons:
+  apt:
+    packages:
+      - nasm
+
 node_js:
   - "stable"
 cache:
   directories:
     - book_store/.cache
-    - book_store/node_modules
 before_install:
   - cd book_store
 script:
