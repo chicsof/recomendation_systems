@@ -8,6 +8,7 @@ addons:
 node_js:
   - "stable"
 cache:
+  npm: true
   directories:
     - book_store/.cache
 before_install:
@@ -20,6 +21,6 @@ deploy:
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   local-dir: book_store/public
-  fdqn: book-rating.shop
+  fqdn: book-rating.shop
   on:
     branch: move_to_serverless
