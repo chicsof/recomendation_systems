@@ -20,6 +20,7 @@
 		"node": ">=8.0.0"
 	},
 	"dependencies": {
+		"@emotion/styled": "^10.0.10",
 		"babel-plugin-styled-components": "^1.10.0",
 		"classnames": "^2.2.6",
 		"debug": "^4.1.1",
@@ -48,7 +49,6 @@
 		"prismjs": "^1.16.0",
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6",
-		"react-emotion": "^10.0.0",
 		"react-helmet": "^5.2.0",
 		"react-rating": "^1.6.2",
 		"react-responsive-modal": "^3.6.0",
