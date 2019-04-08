@@ -20,6 +20,7 @@
 		"node": ">=8.0.0"
 	},
 	"dependencies": {
+		"@emotion/core": "^10.0.10",
 		"@emotion/styled": "^10.0.10",
 		"babel-plugin-styled-components": "^1.10.0",
 		"classnames": "^2.2.6",
@@ -53,6 +54,7 @@
 		"react-rating": "^1.6.2",
 		"react-responsive-modal": "^3.6.0",
 		"react-select": "^2.4.2",
+		"react-spinners": "^0.5.4",
 		"react-toastify": "^4.5.2",
 		"typeface-open-sans": "0.0.54",
 		"typescript": "^3.4.2"
