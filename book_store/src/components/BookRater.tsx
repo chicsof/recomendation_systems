@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Logger from "../Logger";
 import Rating from "./RatingWrapper";
 
-const baseUrl = (process.env.NODE_ENV === "production") ? "https://datasupport.site/r" : "http://localhost:8000";
+const baseUrl = (process.env.NODE_ENV === "production") ? "https://r.book-rating.shop" : "http://localhost:8000";
 
 export default class BookBuyer extends React.Component<any, any> {
 	constructor(props: any) {

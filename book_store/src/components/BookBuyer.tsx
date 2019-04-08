@@ -5,7 +5,7 @@ import Select from "react-select";
 
 import Logger from "../Logger";
 
-const baseUrl = (process.env.NODE_ENV === "production") ? "https://datasupport.site/r" : "http://localhost:8000";
+const baseUrl = (process.env.NODE_ENV === "production") ? "https://r.book-rating.shop" : "http://localhost:8000";
 
 // interface BookBuyerProps { className?: string }
 
