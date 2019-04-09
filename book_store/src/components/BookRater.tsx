@@ -151,7 +151,7 @@ export default class BookBuyer extends React.Component<any, any> {
 		if (count !== Object.keys(ratings).length) {
 			fetch(`${baseUrl}/ratings`, {
 				body: JSON.stringify(data),
-				method: "GET",
+				method: "POST",
 			}).then(
 				(value) => {
 					value.json().then(
